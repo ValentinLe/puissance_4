@@ -11,16 +11,62 @@ import game.*;
 public class Interface extends JFrame {
 
     private Board b;
+    private View view;
+    private int size;
 
     public Interface(Board b) {
         this.b = b;
+        this.size = 40;
         this.setTitle("Puissance 4");
         this.setResizable(true);
 
-        int size = 40;
-        View view = new View(this.b,size);
-        view.setPreferredSize(new Dimension(this.b.getWidth()*size,this.b.getHeight()*size));
+        this.view = new View(this.b,size);
+        view.setPreferredSize(new Dimension(this.b.getWidth()*size + 1,(this.b.getHeight() + 1)*size + 1));
         view.setBackground(Color.white);
+        view.addMouseListener(new MouseListener() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+            if (!Interface.this.b.getOver()) {
+              int x = e.getX();
+              x = Math.round(x/Interface.this.size);
+              if (!Interface.this.b.isColumnFull(x)) {
+                Interface.this.b.addPiece(x);
+                if (Interface.this.b.playerWin(Interface.this.b.getOtherPlayerColor())) {
+                  Interface.this.repaint();
+                }
+              }
+            }
+          }
+
+          @Override
+          public void mousePressed(MouseEvent e) {}
+
+          @Override
+          public void mouseReleased(MouseEvent e) {}
+
+          @Override
+          public void mouseEntered(MouseEvent e) {}
+
+          @Override
+          public void mouseExited(MouseEvent e) {
+            Interface.this.view.setColumn(-1);
+            Interface.this.view.update(Interface.this.view);
+          }
+      });
+      view.addMouseMotionListener(new MouseMotionListener(){
+          @Override
+          public void mouseDragged(MouseEvent e) {}
+
+          @Override
+          public void mouseMoved(MouseEvent e) {
+            if (!Interface.this.b.getOver()) {
+              int x = e.getX();
+              x = Math.round(x/Interface.this.size);
+              Interface.this.view.setColumn(x);
+              Interface.this.repaint();
+            }
+          }
+      });
 
         this.add(view);
 
@@ -29,4 +75,5 @@ public class Interface extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
+
 }

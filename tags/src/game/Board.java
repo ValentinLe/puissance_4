@@ -1,12 +1,15 @@
 
 package game;
 
-public class Board {
+import gui.AbstractModelListener;
+
+public class Board extends AbstractModelListener {
 
   private int[][] grid;
   private int width;
   private int height;
   private int playerColor;
+  private boolean over;
   public static final int EMPTY = 0;
   public static final int YELLOW = 1;
   public static final int RED = 2;
@@ -15,6 +18,7 @@ public class Board {
     this.width = width;
     this.height = height;
     this.playerColor = YELLOW;
+    this.over = false;
     this.initGrid();
   }
 
@@ -30,8 +34,24 @@ public class Board {
     return this.playerColor;
   }
 
+  public int getOtherPlayerColor() {
+    if (this.playerColor == RED) {
+      return YELLOW;
+    } else {
+      return RED;
+    }
+  }
+
   public int[][] getGrid() {
     return this.grid;
+  }
+
+  public boolean getOver() {
+    return this.over;
+  }
+
+  public void setOver(boolean newState) {
+    this.over = newState;
   }
 
   public String toString() {
@@ -78,7 +98,7 @@ public class Board {
   }
 
   public boolean isColumnFull(int column) {
-    return this.grid[0][column] == EMPTY;
+    return this.grid[0][column] != EMPTY;
   }
 
   public void addPiece(int column) {
@@ -87,6 +107,8 @@ public class Board {
       j -= 1;
     }
     this.grid[j][column] = this.playerColor;
+    this.changePlayer();
+    this.fireChange();
   }
 
   public void changePlayer() {
@@ -113,7 +135,7 @@ public class Board {
               this.countPieceLine(i,j,color,1,0) >= 4 ||
               this.countPieceLine(i,j,color,1,1) >= 4 ||
               this.countPieceLine(i,j,color,0,1) >= 4) {
-
+            this.over = true;
             return true;
           }
         }
