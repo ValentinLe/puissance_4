@@ -93,4 +93,29 @@ public class Board {
     }
   }
 
+  public int countPieceLine(int i, int j, int value, int dirX, int dirY) {
+    int c = 1;
+    while (i + c*dirX < this.width && 0 <= j + c*dirY && j + c*dirY < this.height && this.grid[j + c*dirY][i + c*dirX] == value) {
+      c += 1;
+    }
+    return c;
+  }
+
+  public boolean playerWin(int color) {
+    for (int j = 0; j<this.height; j++) {
+      for (int i = 0; i<this.width; i++) {
+        if (this.grid[j][i] != EMPTY) {
+          if (this.countPieceLine(i,j,color,1,-1) >= 4 ||
+              this.countPieceLine(i,j,color,1,0) >= 4 ||
+              this.countPieceLine(i,j,color,1,1) >= 4 ||
+              this.countPieceLine(i,j,color,0,1) >= 4) {
+
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
 }
