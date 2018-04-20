@@ -6,18 +6,28 @@ public class Board {
   private int[][] grid;
   private int width;
   private int height;
-  public final int EMPTY = 0;
-  public final int YELLOW = 1;
-  public final int RED = 2;
+  private int playerColor;
+  public static final int EMPTY = 0;
+  public static final int YELLOW = 1;
+  public static final int RED = 2;
 
   public Board (int width, int height) {
     this.width = width;
     this.height = height;
+    this.playerColor = YELLOW;
     this.initGrid();
   }
 
-  public void setValue(int i, int j, int value) {
-    this.grid[j][i] = value;
+  public int getWidth() {
+    return this.width;
+  }
+
+  public int getHeight() {
+    return this.height;
+  }
+
+  public int getPlayerColor() {
+    return this.playerColor;
   }
 
   public String toString() {
@@ -53,4 +63,34 @@ public class Board {
       }
     }
   }
+
+  public boolean isFull() {
+    for (int value : this.grid[0]) {
+      if (value == EMPTY) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public boolean isColumnFull(int column) {
+    return this.grid[0][column] == EMPTY;
+  }
+
+  public void addPiece(int column) {
+    int j = this.height - 1;
+    while (this.grid[j][column] != EMPTY) {
+      j -= 1;
+    }
+    this.grid[j][column] = this.playerColor;
+  }
+
+  public void changePlayer() {
+    if (this.playerColor == RED) {
+      this.playerColor = YELLOW;
+    } else {
+      this.playerColor = RED;
+    }
+  }
+
 }
