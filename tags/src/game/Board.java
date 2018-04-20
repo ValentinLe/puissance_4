@@ -30,6 +30,10 @@ public class Board {
     return this.playerColor;
   }
 
+  public int[][] getGrid() {
+    return this.grid;
+  }
+
   public String toString() {
     String ch = "\n";
     for (int j = 0; j<this.height; j++) {
