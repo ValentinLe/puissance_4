@@ -6,17 +6,20 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import game.*;
 
 public class Interface extends JFrame {
 
     private Board b;
     private View view;
+    private IA ia;
     private int size;
 
     public Interface(Board b) {
         this.b = b;
         this.size = 40;
+        this.ia = new IA(this.b);
         this.setTitle("Puissance 4");
         this.setResizable(true);
 
@@ -34,6 +37,11 @@ public class Interface extends JFrame {
                 if (Interface.this.b.playerWin(Interface.this.b.getOtherPlayerColor()) || Interface.this.b.isFull()) {
                   Interface.this.repaint();
                 }
+              }
+              if (!Interface.this.b.getOver()) {
+                ArrayList<Integer> choiceIa = Interface.this.ia.alphabeta(Interface.this.b,-1,10000000,3);
+                Interface.this.b.addPiece(choiceIa.get(1));
+                Interface.this.repaint();
               }
             }
           }
