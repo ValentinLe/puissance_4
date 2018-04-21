@@ -22,7 +22,7 @@ public class IA {
         Integer valueFinal = Integer.MIN_VALUE;
         Integer move = null;
         for (Integer col : b.getMoves()) {
-          ArrayList<Integer> rec = this.alphabeta(b.playMove(col), alpha, beta, colorIa, prof-1);
+          ArrayList<Integer> rec = this.alphabeta(b.playMove(col), alpha, beta, b.getOtherPlayerColor(), prof-1);
           Integer value = rec.get(0);
           Integer action = rec.get(1);
           if (value > valueFinal) {
@@ -44,7 +44,7 @@ public class IA {
         Integer valueFinal = Integer.MAX_VALUE;
         Integer move = null;
         for (Integer col : b.getMoves()) {
-          ArrayList<Integer> rec = this.alphabeta(b.playMove(col), alpha, beta, colorIa, prof-1);
+          ArrayList<Integer> rec = this.alphabeta(b.playMove(col), alpha, beta, b.getOtherPlayerColor(), prof-1);
           Integer value = rec.get(0);
           Integer action = rec.get(1);
           if (value < valueFinal) {

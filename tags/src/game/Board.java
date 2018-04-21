@@ -164,42 +164,63 @@ public class Board extends AbstractModelListener {
     }
     return false;
   }
+  /*
+  public int getValue() {
+    int value = 0;
+    int color = this.playerColor;
+    int otherColor = this.getOtherPlayerColor();
+    for (int j = 0; j<this.height; j++) {
+      for (int i = 0; i<this.width; i++) {
+        if (this.grid[j][i] != EMPTY) {
+
+          if (this.countPieceLine(i,j,color,-1,-1) >= 4 ||
+          this.countPieceLine(i,j,color,1,-1) >= 4 ||
+          this.countPieceLine(i,j,color,1,0) >= 4 ||
+          this.countPieceLine(i,j,color,0,1) >= 4) {
+            value = Integer.MAX_VALUE;
+          }
+
+          if (this.countPieceLine(i,j,otherColor,-1,-1) >= 4 ||
+          this.countPieceLine(i,j,otherColor,1,-1) >= 4 ||
+          this.countPieceLine(i,j,otherColor,1,0) >= 4 ||
+          this.countPieceLine(i,j,otherColor,0,1) >= 4) {
+            value = Integer.MIN_VALUE;
+          }
+        }
+      }
+    }
+    return value;
+  }
+  */
 
   public int getValue() {
     int value = 0;
     int color = this.playerColor;
     for (int j = 0; j<this.height; j++) {
       for (int i = 0; i<this.width; i++) {
-        if (this.grid[j][i] != EMPTY && this.grid[j][i] == this.playerColor) {
-          int diagoDG = this.countPieceLine(i,j,color,-1,-1);
-          int diagoGD = this.countPieceLine(i,j,color,1,-1);
+        if (this.grid[j][i] != EMPTY && this.grid[j][i] == color) {
+          int diagoGD = this.countPieceLine(i,j,color,-1,-1);
+          int diagoDG = this.countPieceLine(i,j,color,1,-1);
           int horiz = this.countPieceLine(i,j,color,1,0);
           int verti = this.countPieceLine(i,j,color,0,1);
 
-          if (diagoDG == 3) {
-            value += 50;
-          }
-          if (diagoGD == 3) {
-            value += 50;
-          }
-
           if (diagoDG >= 4 || diagoGD >= 4 || horiz >= 4 || verti >= 4) {
-            value += Integer.MAX_VALUE;
+            value += 1000;
           }
 
           if (horiz == 1) {
-            value += 1;
+            value += 10;
           } else if (horiz == 2) {
-            value += 5;
+            value += 20;
           } else if (horiz == 3) {
-            value += 35;
+            value += 5;
           }
           if (verti == 1) {
-            value += 1;
+            value += 10;
           } else if (verti == 2) {
-            value += 5;
+            value += 20;
           } else if (verti == 3) {
-            value += 35;
+            value += 5;
           }
         }
       }
