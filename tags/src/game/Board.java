@@ -94,6 +94,7 @@ public class Board extends AbstractModelListener {
         return false;
       }
     }
+    this.over = true;
     return true;
   }
 
@@ -120,7 +121,7 @@ public class Board extends AbstractModelListener {
   }
 
   public int countPieceLine(int i, int j, int value, int dirX, int dirY) {
-    int c = 1;
+    int c = 0;
     while (i + c*dirX < this.width && 0 <= j + c*dirY && j + c*dirY < this.height && this.grid[j + c*dirY][i + c*dirX] == value) {
       c += 1;
     }

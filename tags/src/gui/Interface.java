@@ -31,7 +31,7 @@ public class Interface extends JFrame {
               x = Math.round(x/Interface.this.size);
               if (!Interface.this.b.isColumnFull(x)) {
                 Interface.this.b.addPiece(x);
-                if (Interface.this.b.playerWin(Interface.this.b.getOtherPlayerColor())) {
+                if (Interface.this.b.playerWin(Interface.this.b.getOtherPlayerColor()) || Interface.this.b.isFull()) {
                   Interface.this.repaint();
                 }
               }
