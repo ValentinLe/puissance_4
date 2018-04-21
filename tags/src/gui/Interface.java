@@ -39,9 +39,11 @@ public class Interface extends JFrame {
                 }
               }
               if (!Interface.this.b.getOver()) {
-                ArrayList<Integer> choiceIa = Interface.this.ia.alphabeta(Interface.this.b,-1,10000000,3);
+                ArrayList<Integer> choiceIa = Interface.this.ia.alphabeta(Interface.this.b,Integer.MIN_VALUE,Integer.MAX_VALUE, Interface.this.b.getPlayerColor(), 10);
                 Interface.this.b.addPiece(choiceIa.get(1));
-                Interface.this.repaint();
+                if (Interface.this.b.playerWin(Interface.this.b.getOtherPlayerColor()) || Interface.this.b.isFull()) {
+                  Interface.this.repaint();
+                }
               }
             }
           }

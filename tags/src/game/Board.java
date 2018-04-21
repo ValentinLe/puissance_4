@@ -184,7 +184,7 @@ public class Board extends AbstractModelListener {
           }
 
           if (diagoDG >= 4 || diagoGD >= 4 || horiz >= 4 || verti >= 4) {
-            value += 1000000;
+            value += Integer.MAX_VALUE;
           }
 
           if (horiz == 1) {
