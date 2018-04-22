@@ -146,11 +146,11 @@ public class Board extends AbstractModelListener {
     }
   }
 
-  public int countPieceLine(int i, int j, int value, int dirX, int dirY) {
+  public int countPieceLine(int i, int j, int color, int dirX, int dirY) {
     int c = 0;
-    while (0 < i + c*dirX && i + c*dirX < this.width &&
-     0 <= j + c*dirY && j + c*dirY < this.height&&
-     this.grid[j + c*dirY][i + c*dirX] == value) {
+    while (0 <= i + c*dirX && i + c*dirX < this.width &&
+     0 <= j + c*dirY && j + c*dirY < this.height &&
+     this.grid[j + c*dirY][i + c*dirX] == color) {
       c += 1;
     }
     return c;
