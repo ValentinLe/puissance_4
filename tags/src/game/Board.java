@@ -50,6 +50,14 @@ public class Board extends AbstractModelListener {
     }
   }
 
+  public int getOtherPlayerColor(int color) {
+    if (color == RED) {
+      return YELLOW;
+    } else {
+      return RED;
+    }
+  }
+
   public int[][] getGrid() {
     return this.grid;
   }
@@ -193,9 +201,9 @@ public class Board extends AbstractModelListener {
   }
   */
 
-  public int getValue() {
+  public int getValue(int color) {
     int value = 0;
-    int color = this.playerColor;
+    int otherColor = this.getOtherPlayerColor(color);
     for (int j = 0; j<this.height; j++) {
       for (int i = 0; i<this.width; i++) {
         if (this.grid[j][i] != EMPTY && this.grid[j][i] == color) {
@@ -215,12 +223,66 @@ public class Board extends AbstractModelListener {
           } else if (horiz == 3) {
             value += 5;
           }
+
           if (verti == 1) {
             value += 10;
           } else if (verti == 2) {
             value += 20;
           } else if (verti == 3) {
             value += 5;
+          }
+
+          if (diagoGD == 1) {
+            value += 10;
+          } else if (diagoGD == 2) {
+            value += 20;
+          } else if (diagoGD == 3) {
+            value += 5;
+          }
+
+          if (diagoDG == 1) {
+            value += 10;
+          } else if (diagoDG == 2) {
+            value += 20;
+          } else if (diagoDG == 3) {
+            value += 5;
+          }
+        } else {
+          int diagoGD = this.countPieceLine(i,j,otherColor,-1,-1);
+          int diagoDG = this.countPieceLine(i,j,otherColor,1,-1);
+          int horiz = this.countPieceLine(i,j,otherColor,1,0);
+          int verti = this.countPieceLine(i,j,otherColor,0,1);
+
+          if (horiz == 1) {
+            value -= 5;
+          } else if (horiz == 2) {
+            value -= 50;
+          } else if (horiz == 3) {
+            value -= 500;
+          }
+
+          if (verti == 1) {
+            value -= 5;
+          } else if (verti == 2) {
+            value -= 50;
+          } else if (verti == 3) {
+            value -= 500;
+          }
+
+          if (diagoGD == 1) {
+            value -= 5;
+          } else if (diagoGD == 2) {
+            value -= 50;
+          } else if (diagoGD == 3) {
+            value -= 500;
+          }
+
+          if (diagoDG == 1) {
+            value -= 5;
+          } else if (diagoDG == 2) {
+            value -= 50;
+          } else if (diagoDG == 3) {
+            value -= 500;
           }
         }
       }

@@ -14,11 +14,11 @@ public class IA {
   public ArrayList<Integer> alphabeta(Board b, int alpha, int beta, int colorIa, int prof) {
     ArrayList<Integer> listReturn = new ArrayList<>();
     if (prof == 0 || b.getOver()) {
-      listReturn.add(b.getValue());
+      listReturn.add(b.getValue(b.getPlayerColor()));
       listReturn.add(null);
       return listReturn;
     } else {
-      if (b.getPlayerColor() == colorIa) {
+      if (b.getOtherPlayerColor() == colorIa) {
         Integer valueFinal = Integer.MIN_VALUE;
         Integer move = null;
         for (Integer col : b.getMoves()) {
@@ -44,7 +44,7 @@ public class IA {
         Integer valueFinal = Integer.MAX_VALUE;
         Integer move = null;
         for (Integer col : b.getMoves()) {
-          ArrayList<Integer> rec = this.alphabeta(b.playMove(col), alpha, beta, b.getOtherPlayerColor(), prof-1);
+          ArrayList<Integer> rec = this.alphabeta(b.playMove(col), alpha, beta, b.getPlayerColor(), prof-1);
           Integer value = rec.get(0);
           Integer action = rec.get(1);
           if (value < valueFinal) {
