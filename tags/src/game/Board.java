@@ -173,33 +173,32 @@ public class Board extends AbstractModelListener {
     return false;
   }
   /*
-  public int getValue() {
+  public int getValue(int color) {
     int value = 0;
-    int color = this.playerColor;
-    int otherColor = this.getOtherPlayerColor();
+    int otherColor = this.getOtherPlayerColor(color);
     for (int j = 0; j<this.height; j++) {
       for (int i = 0; i<this.width; i++) {
         if (this.grid[j][i] != EMPTY) {
-
-          if (this.countPieceLine(i,j,color,-1,-1) >= 4 ||
-          this.countPieceLine(i,j,color,1,-1) >= 4 ||
-          this.countPieceLine(i,j,color,1,0) >= 4 ||
-          this.countPieceLine(i,j,color,0,1) >= 4) {
-            value = Integer.MAX_VALUE;
-          }
 
           if (this.countPieceLine(i,j,otherColor,-1,-1) >= 4 ||
           this.countPieceLine(i,j,otherColor,1,-1) >= 4 ||
           this.countPieceLine(i,j,otherColor,1,0) >= 4 ||
           this.countPieceLine(i,j,otherColor,0,1) >= 4) {
-            value = Integer.MIN_VALUE;
+            value -= Integer.MAX_VALUE;
           }
+          if (this.countPieceLine(i,j,color,-1,-1) >= 4 ||
+          this.countPieceLine(i,j,color,1,-1) >= 4 ||
+          this.countPieceLine(i,j,color,1,0) >= 4 ||
+          this.countPieceLine(i,j,color,0,1) >= 4) {
+            value += Integer.MAX_VALUE;
+          }
+
         }
       }
     }
     return value;
-  }
-  */
+  }*/
+
 
   public int getValue(int color) {
     int value = 0;
@@ -254,35 +253,35 @@ public class Board extends AbstractModelListener {
           int verti = this.countPieceLine(i,j,otherColor,0,1);
 
           if (horiz == 1) {
-            value -= 5;
+            value += 5;
           } else if (horiz == 2) {
-            value -= 50;
+            value += 50;
           } else if (horiz == 3) {
-            value -= 500;
+            value += 500;
           }
 
           if (verti == 1) {
-            value -= 5;
+            value += 5;
           } else if (verti == 2) {
-            value -= 50;
+            value += 50;
           } else if (verti == 3) {
-            value -= 500;
+            value += 500;
           }
 
           if (diagoGD == 1) {
-            value -= 5;
+            value += 5;
           } else if (diagoGD == 2) {
-            value -= 50;
+            value += 50;
           } else if (diagoGD == 3) {
-            value -= 500;
+            value += 500;
           }
 
           if (diagoDG == 1) {
-            value -= 5;
+            value += 5;
           } else if (diagoDG == 2) {
-            value -= 50;
+            value += 50;
           } else if (diagoDG == 3) {
-            value -= 500;
+            value += 500;
           }
         }
       }
