@@ -14,12 +14,15 @@ public class Interface extends JFrame implements ModelListener {
     private Board b;
     private View view;
     private IA ia;
+    private JToggleButton toggleButton;
     private int size;
+    private boolean modeIA;
 
     public Interface(Board b) {
         this.b = b;
         this.b.addListener(this);
         this.size = 80;
+        this.modeIA = true;
         this.ia = new IA(this.b);
         this.setResizable(false);
         this.setTitle("Puissance 4");
@@ -45,7 +48,7 @@ public class Interface extends JFrame implements ModelListener {
                 if (Interface.this.b.playerWin(Interface.this.b.getOtherPlayerColor()) || Interface.this.b.isFull()) {
                   Interface.this.repaint();
                 }
-                if (!Interface.this.b.getOver()) {
+                if (Interface.this.modeIA && !Interface.this.b.getOver()) {
                   ArrayList<Integer> choiceIa = Interface.this.ia.alphabeta(Interface.this.b,Integer.MIN_VALUE,Integer.MAX_VALUE, Board.RED, 5);
                   Interface.this.b.addPiece(choiceIa.get(1));
                   if (Interface.this.b.playerWin(Interface.this.b.getOtherPlayerColor()) || Interface.this.b.isFull()) {
@@ -99,8 +102,36 @@ public class Interface extends JFrame implements ModelListener {
         @Override
         public void actionPerformed(ActionEvent e) {
           Interface.this.b.restart();
+          Interface.this.modeIA = Interface.this.toggleButton.isSelected();
         }
       });
+
+      JPanel zoneIa = new JPanel();
+      JLabel labIa = new JLabel("AI : ");
+
+      this.toggleButton = new JToggleButton("Yes", true);
+      this.toggleButton.setRequestFocusEnabled(false);
+      toggleButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          if (!Interface.this.toggleButton.isSelected()) {
+            Interface.this.toggleButton.setText("No");
+            Interface.this.toggleButton.setSelected(false);
+          } else {
+            Interface.this.toggleButton.setText("Yes");
+            Interface.this.toggleButton.setSelected(true);
+          }
+          Interface.this.toggleButton.repaint();
+        }
+      });
+
+      zoneIa.setLayout(new GridBagLayout());
+      GridBagConstraints gcIa = new GridBagConstraints();
+      gcIa.gridx = 0;
+      gcIa.gridy = 0;
+      zoneIa.add(labIa,gcIa);
+      gcIa.gridx = 1;
+      zoneIa.add(toggleButton,gcIa);
 
       JButton bQuit = new JButton("Quit");
       bQuit.setRequestFocusEnabled(false);
@@ -112,8 +143,9 @@ public class Interface extends JFrame implements ModelListener {
       });
 
       JPanel zoneButton = new JPanel();
-      zoneButton.setLayout(new GridLayout(2,1,20,20));
+      zoneButton.setLayout(new GridLayout(3,1,20,20));
       zoneButton.add(bRestart);
+      zoneButton.add(zoneIa);
       zoneButton.add(bQuit);
 
       this.setLayout(new GridBagLayout());
