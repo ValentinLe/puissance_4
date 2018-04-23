@@ -175,6 +175,14 @@ public class Board extends AbstractModelListener {
     }
     return false;
   }
+
+  public void restart() {
+    initGrid();
+    this.over = false;
+    this.playerColor = YELLOW;
+    this.fireChange();
+  }
+
   /*
   public int getValue(int color) {
     int value = 0;
@@ -182,20 +190,21 @@ public class Board extends AbstractModelListener {
     for (int j = 0; j<this.height; j++) {
       for (int i = 0; i<this.width; i++) {
         if (this.grid[j][i] != EMPTY) {
-
-          if (this.countPieceLine(i,j,otherColor,-1,-1) >= 4 ||
-          this.countPieceLine(i,j,otherColor,1,-1) >= 4 ||
-          this.countPieceLine(i,j,otherColor,1,0) >= 4 ||
-          this.countPieceLine(i,j,otherColor,0,1) >= 4) {
-            value -= Integer.MAX_VALUE;
+          if (this.grid[j][i] == color) {
+            if (this.countPieceLine(i,j,color,-1,-1) >= 4 ||
+            this.countPieceLine(i,j,color,1,-1) >= 4 ||
+            this.countPieceLine(i,j,color,1,0) >= 4 ||
+            this.countPieceLine(i,j,color,0,1) >= 4) {
+              value += 10;
+            }
+          } else {
+            if (this.countPieceLine(i,j,otherColor,-1,-1) >= 4 ||
+            this.countPieceLine(i,j,otherColor,1,-1) >= 4 ||
+            this.countPieceLine(i,j,otherColor,1,0) >= 4 ||
+            this.countPieceLine(i,j,otherColor,0,1) >= 4) {
+              value += 10;
+            }
           }
-          if (this.countPieceLine(i,j,color,-1,-1) >= 4 ||
-          this.countPieceLine(i,j,color,1,-1) >= 4 ||
-          this.countPieceLine(i,j,color,1,0) >= 4 ||
-          this.countPieceLine(i,j,color,0,1) >= 4) {
-            value += Integer.MAX_VALUE;
-          }
-
         }
       }
     }
@@ -291,6 +300,7 @@ public class Board extends AbstractModelListener {
     }
     return value;
   }
+
 
   public ArrayList<Integer> getMoves() {
     ArrayList<Integer> moves = new ArrayList<>();

@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import game.*;
 
-public class Interface extends JFrame {
+public class Interface extends JFrame implements ModelListener {
 
     private Board b;
     private View view;
@@ -18,20 +18,28 @@ public class Interface extends JFrame {
 
     public Interface(Board b) {
         this.b = b;
-        this.size = 40;
+        this.b.addListener(this);
+        this.size = 80;
         this.ia = new IA(this.b);
+        this.setResizable(false);
         this.setTitle("Puissance 4");
-        this.setResizable(true);
 
         this.view = new View(this.b,size);
-        view.setPreferredSize(new Dimension(this.b.getWidth()*size + 1,(this.b.getHeight() + 1)*size + 1));
-        view.setBackground(Color.white);
+        view.setPreferredSize(new Dimension(this.b.getWidth()*(size+10) + 11,(this.b.getHeight() + 1)*(size+10) + 1));
+
         view.addMouseListener(new MouseListener() {
           @Override
           public void mouseClicked(MouseEvent e) {
             if (!Interface.this.b.getOver()) {
               int x = e.getX();
-              x = Math.round(x/Interface.this.size);
+              x -= 5;
+              if (x < 0) {
+                x = 0;
+              }
+              x = Math.round(x / (Interface.this.size + 10));
+              if (x >= Interface.this.b.getWidth()) {
+                x = Interface.this.b.getWidth() - 1;
+              }
               if (!Interface.this.b.isColumnFull(x)) {
                 Interface.this.b.addPiece(x);
                 if (Interface.this.b.playerWin(Interface.this.b.getOtherPlayerColor()) || Interface.this.b.isFull()) {
@@ -71,19 +79,61 @@ public class Interface extends JFrame {
           public void mouseMoved(MouseEvent e) {
             if (!Interface.this.b.getOver()) {
               int x = e.getX();
-              x = Math.round(x/Interface.this.size);
+              x -= 5;
+              if (x < 0) {
+                x = 0;
+              }
+              x = Math.round(x / (Interface.this.size + 10));
+              if (x >= Interface.this.b.getWidth()) {
+                x = Interface.this.b.getWidth() - 1;
+              }
               Interface.this.view.setColumn(x);
               Interface.this.repaint();
             }
           }
       });
 
-        this.add(view);
+      JButton bRestart = new JButton("Restart");
+      bRestart.setRequestFocusEnabled(false);
+      bRestart.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          Interface.this.b.restart();
+        }
+      });
 
-        pack();
-        this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);
+      JButton bQuit = new JButton("Quit");
+      bQuit.setRequestFocusEnabled(false);
+      bQuit.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          Interface.this.dispose();
+        }
+      });
+
+      JPanel zoneButton = new JPanel();
+      zoneButton.setLayout(new GridLayout(2,1,20,20));
+      zoneButton.add(bRestart);
+      zoneButton.add(bQuit);
+
+      this.setLayout(new GridBagLayout());
+      GridBagConstraints gc = new GridBagConstraints();
+
+      gc.gridx = 0;
+      gc.gridy = 0;
+
+      this.add(view,gc);
+      gc.gridx = 1;
+      this.add(zoneButton,gc);
+
+      pack();
+      this.setLocationRelativeTo(null);
+      this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      this.setVisible(true);
+    }
+
+    public void update(Object src) {
+      repaint();
     }
 
 }
