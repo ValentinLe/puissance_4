@@ -9,6 +9,9 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import game.*;
 
+/**
+  * classe de l'interface principale
+  */
 public class Interface extends JFrame implements ModelListener {
 
     private Board b;
@@ -18,12 +21,16 @@ public class Interface extends JFrame implements ModelListener {
     private int size;
     private boolean modeIA;
 
+    /**
+      * constructeur de l'interface
+      * @param b l'etat du jeu dans lequel travailler
+      */
     public Interface(Board b) {
         this.b = b;
         this.b.addListener(this);
         this.size = 80;
         this.modeIA = true;
-        this.ia = new IA(this.b);
+        this.ia = new IA();
         this.setResizable(false);
         this.setTitle("Puissance 4");
 
@@ -164,6 +171,11 @@ public class Interface extends JFrame implements ModelListener {
       this.setVisible(true);
     }
 
+    /**
+      * actualise l'interface
+      * @param src pas util ici
+      */
+    @Override
     public void update(Object src) {
       repaint();
     }

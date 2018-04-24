@@ -3,14 +3,20 @@ package game;
 
 import java.util.ArrayList;
 
+/**
+  * Classe de l'IA
+  */
 public class IA {
 
-  private Board b;
-
-  public IA(Board b) {
-    this.b = b;
-  }
-
+  /**
+    * algorithme alphabeta
+    * @param b l'etat du jeu de depart
+    * @param alpha valeur minimum du joueur Max
+    * @param beta valeur maximum du joueur Min
+    * @param colorIa la couleur de l'IA, a maximiser
+    * @param prof la profondeur de recherche de l'IA
+    * @return la liste de la valeur et du meilleur coup a jouer (colonne)
+    */
   public ArrayList<Integer> alphabeta(Board b, int alpha, int beta, int colorIa, int prof) {
     ArrayList<Integer> listReturn = new ArrayList<>();
     if (prof == 0 || b.getOver()) {

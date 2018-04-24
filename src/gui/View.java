@@ -9,6 +9,9 @@ import java.awt.event.*;
 import java.awt.event.KeyEvent;
 import game.*;
 
+/**
+  * classe de la vue
+  */
 public class View extends JPanel implements ModelListener {
 
   private Board b;
@@ -18,6 +21,11 @@ public class View extends JPanel implements ModelListener {
   private int size;
   private int column;
 
+  /**
+    * constructeur de la vue
+    * @param b l'etat de jeu a representer
+    * @param size la taille des pions
+    */
   public View(Board b,int size) {
     this.b = b;
     this.b.addListener(this);
@@ -28,10 +36,17 @@ public class View extends JPanel implements ModelListener {
     this.column = -1;
   }
 
+  /**
+    * setteur de la colonne qui est survolee
+    * @param newColumn la colonne survolee
+    */
   public void setColumn(int newColumn) {
     this.column = newColumn;
   }
 
+  /**
+    * dessine le visuel du jeu
+    */
   @Override
   public void paintComponent(Graphics g) {
     int[][] grid = this.b.getGrid();
@@ -61,6 +76,9 @@ public class View extends JPanel implements ModelListener {
     }
   }
 
+  /**
+    * actualise le visuel
+    */
   @Override
   public void update(Object src) {
     repaint();
