@@ -5,7 +5,7 @@ import gui.AbstractModelListener;
 import java.util.ArrayList;
 
 /**
-  * Classe représentant le plateau du jeu
+  * Classe representant le plateau du jeu
   */
 public class Board extends AbstractModelListener {
 
