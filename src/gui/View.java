@@ -29,8 +29,6 @@ public class View extends JPanel implements ModelListener {
   public View(Board b,int size) {
     this.b = b;
     this.b.addListener(this);
-    this.imYellow = Toolkit.getDefaultToolkit().getImage("../ressources/images/yellow.png");
-    this.imRed = Toolkit.getDefaultToolkit().getImage("../ressources/images/red.png");
     this.setOpaque(false);
     this.size = size;
     this.column = -1;
@@ -52,22 +50,28 @@ public class View extends JPanel implements ModelListener {
     int[][] grid = this.b.getGrid();
     int sizeDecal = size + 10;
     Color bg = new Color(0,42,224);
+    Color yellow = new Color(255,209,26);
+    Color red = new Color(255,51,51);
     Color cEmpty = new Color(222,227,233);
     g.setColor(bg);
     g.fillRect(0, size, this.b.getWidth()*sizeDecal + 10, this.b.getHeight()*sizeDecal + 10);
     if (this.column != -1 && !this.b.getOver()) {
       if (this.b.getPlayerColor() == Board.RED) {
-        g.drawImage(this.imRed, sizeDecal*this.column + 10, 0, size, size, null);
+        g.setColor(red);
+        g.fillOval(sizeDecal*this.column + 10, 0, size, size);
       } else {
-        g.drawImage(this.imYellow, sizeDecal*this.column + 10, 0, size, size, null);
+        g.setColor(yellow);
+        g.fillOval(sizeDecal*this.column + 10, 0, size, size);
       }
     }
     for (int j = 0; j<this.b.getHeight(); j++) {
       for (int i = 0; i<this.b.getWidth(); i++) {
         if (grid[j][i] == Board.YELLOW) {
-          g.drawImage(this.imYellow, sizeDecal*i+10, sizeDecal*(j+1), size, size, null);
+          g.setColor(yellow);
+          g.fillOval(sizeDecal*i+10, sizeDecal*(j+1), size, size);
         } else if (grid[j][i] == Board.RED) {
-          g.drawImage(this.imRed, sizeDecal*i + 10, sizeDecal*(j+1), size, size, null);
+          g.setColor(red);
+          g.fillOval(sizeDecal*i+10, sizeDecal*(j+1), size, size);
         } else {
           g.setColor(cEmpty);
           g.fillOval(sizeDecal*i + 10, sizeDecal*(j+1), size, size);

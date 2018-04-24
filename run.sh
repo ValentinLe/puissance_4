@@ -5,6 +5,6 @@ then
 sh scripts/compile.sh
 fi
 
-cd build/src/
+cd build/
 java gui/Main &
 cd ..
