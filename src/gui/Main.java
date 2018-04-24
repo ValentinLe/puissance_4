@@ -1,7 +1,7 @@
 
 package gui;
 
-import game.*;
+import game.Board;
 
 /**
   * Classe principale de la version graphique

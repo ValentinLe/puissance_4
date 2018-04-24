@@ -1,13 +1,15 @@
 #!bin/sh
 
-if [ ! -d build ]
+if [ -d build ]
 then
+rm -r build/
+fi
+
 mkdir build/
 cd build/
 mkdir src/
-cd ../
+cd ..
 cp -r ressources/ build/
-fi
 
 cd src/
 javac -d ../build/src */*.java
