@@ -27,7 +27,7 @@ public class Interface extends JFrame implements ModelListener {
       */
     public Interface(Board b) {
         this.b = b;
-        this.b.addListener(this);
+        //this.b.addListener(this);
         this.size = 80;
         this.modeIA = true;
         this.ia = new IA();
