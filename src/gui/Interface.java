@@ -78,7 +78,6 @@ public class Interface extends JFrame implements ModelListener {
           @Override
           public void mouseExited(MouseEvent e) {
             Interface.this.view.setColumn(-1);
-            Interface.this.view.update(Interface.this.view);
           }
       });
       view.addMouseMotionListener(new MouseMotionListener(){
@@ -98,7 +97,6 @@ public class Interface extends JFrame implements ModelListener {
                 x = Interface.this.b.getWidth() - 1;
               }
               Interface.this.view.setColumn(x);
-              Interface.this.repaint();
             }
           }
       });

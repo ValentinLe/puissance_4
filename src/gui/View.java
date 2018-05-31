@@ -40,6 +40,7 @@ public class View extends JPanel implements ModelListener {
     */
   public void setColumn(int newColumn) {
     this.column = newColumn;
+    this.repaint();
   }
 
   /**
@@ -47,6 +48,7 @@ public class View extends JPanel implements ModelListener {
     */
   @Override
   public void paintComponent(Graphics g) {
+    super.paintComponent(g); // a voir pour animation
     int[][] grid = this.b.getGrid();
     int sizeDecal = size + 10;
     Color bg = new Color(0,42,224);
