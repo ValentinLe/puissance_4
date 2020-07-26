@@ -74,11 +74,7 @@ public class Board extends AbstractModelListener {
     * @return la couleur du joueur qui ne joue pas
     */
   public int getOtherPlayerColor() {
-    if (this.playerColor == RED) {
-      return YELLOW;
-    } else {
-      return RED;
-    }
+    return this.getOtherPlayerColor(this.getPlayerColor());
   }
 
   /**
@@ -265,6 +261,10 @@ public class Board extends AbstractModelListener {
     return false;
   }
 
+  public boolean isFinish() {
+    return this.isFull() || this.playerWin(this.getPlayerColor()) || this.playerWin(this.getOtherPlayerColor());
+  }
+
   /**
     * initialise le jeu afin de recommencer
     */
@@ -275,126 +275,73 @@ public class Board extends AbstractModelListener {
     this.fireChange();
   }
 
-  /*
-  public int getValue(int color) {
-    int value = 0;
-    int otherColor = this.getOtherPlayerColor(color);
+  public int numberPieceOf(int color) {
+    int cpt = 0;
     for (int j = 0; j<this.height; j++) {
       for (int i = 0; i<this.width; i++) {
-        if (this.grid[j][i] != EMPTY) {
-          if (this.grid[j][i] == color) {
-            if (this.countPieceLine(i,j,color,-1,-1) >= 4 ||
-            this.countPieceLine(i,j,color,1,-1) >= 4 ||
-            this.countPieceLine(i,j,color,1,0) >= 4 ||
-            this.countPieceLine(i,j,color,0,1) >= 4) {
-              value += 10;
-            }
-          } else {
-            if (this.countPieceLine(i,j,otherColor,-1,-1) >= 4 ||
-            this.countPieceLine(i,j,otherColor,1,-1) >= 4 ||
-            this.countPieceLine(i,j,otherColor,1,0) >= 4 ||
-            this.countPieceLine(i,j,otherColor,0,1) >= 4) {
-              value += 10;
-            }
-          }
+        if (this.grid[j][i] == color) {
+          cpt += 1;
         }
       }
     }
-    return value;
-  }*/
+    return cpt;
+  }
 
-  /**
-    * evalue la valeur de l'etat du jeu selon une couleur du joueur donnee
-    * @param color la couleur du joueur
-    * @return la valeur de l'etat de jeu
-    */
-  public int getValue(int color) {
-    int value = 0;
-    int otherColor = this.getOtherPlayerColor(color);
+  public boolean alignPossible(int i, int j, int dx, int dy) {
+    int c = 0;
+    int x = i;
+    int y = j;
+    while ((0 <= x && x < this.width) && (0 <= y && y < this.height)) {
+      c += 1;
+      x += dx;
+      y += dy;
+    }
+    return c >= 4;
+  }
+
+  private void addPossibleAlign(int[][] matAlignPossible, int i, int j, int dx, int dy) {
+    if (this.alignPossible(i, j, dx, dy)) {
+      for (int k = 0; k < 4; k++) {
+        matAlignPossible[j + k*dy][i + k*dx] += 1;
+      }
+    }
+  }
+
+  public int[][] createTableEvaluation() {
+    int[][] matAlignPossible = new int[this.height][this.width];
     for (int j = 0; j<this.height; j++) {
       for (int i = 0; i<this.width; i++) {
-        if (this.grid[j][i] != EMPTY && this.grid[j][i] == color) {
-          int diagoGD = this.countPieceLine(i,j,color,-1,-1);
-          int diagoDG = this.countPieceLine(i,j,color,1,-1);
-          int horiz = this.countPieceLine(i,j,color,1,0);
-          int verti = this.countPieceLine(i,j,color,0,1);
+        this.addPossibleAlign(matAlignPossible, i, j, 1, -1);
+        this.addPossibleAlign(matAlignPossible, i, j, 1, 0);
+        this.addPossibleAlign(matAlignPossible, i, j, -1, -1);
+        this.addPossibleAlign(matAlignPossible, i, j, 0, 1);
+      }
+    }
+    return matAlignPossible;
+  }
 
-          if (diagoDG >= 4 || diagoGD >= 4 || horiz >= 4 || verti >= 4) {
-            value += 1000;
-          }
-
-          if (horiz == 1) {
-            value += 10;
-          } else if (horiz == 2) {
-            value += 20;
-          } else if (horiz == 3) {
-            value += 5;
-          }
-
-          if (verti == 1) {
-            value += 10;
-          } else if (verti == 2) {
-            value += 20;
-          } else if (verti == 3) {
-            value += 5;
-          }
-
-          if (diagoGD == 1) {
-            value += 10;
-          } else if (diagoGD == 2) {
-            value += 20;
-          } else if (diagoGD == 3) {
-            value += 5;
-          }
-
-          if (diagoDG == 1) {
-            value += 10;
-          } else if (diagoDG == 2) {
-            value += 20;
-          } else if (diagoDG == 3) {
-            value += 5;
-          }
-        } else {
-          int diagoGD = this.countPieceLine(i,j,otherColor,-1,-1);
-          int diagoDG = this.countPieceLine(i,j,otherColor,1,-1);
-          int horiz = this.countPieceLine(i,j,otherColor,1,0);
-          int verti = this.countPieceLine(i,j,otherColor,0,1);
-
-          if (horiz == 1) {
-            value += 5;
-          } else if (horiz == 2) {
-            value += 50;
-          } else if (horiz == 3) {
-            value += 500;
-          }
-
-          if (verti == 1) {
-            value += 5;
-          } else if (verti == 2) {
-            value += 50;
-          } else if (verti == 3) {
-            value += 500;
-          }
-
-          if (diagoGD == 1) {
-            value += 5;
-          } else if (diagoGD == 2) {
-            value += 50;
-          } else if (diagoGD == 3) {
-            value += 500;
-          }
-
-          if (diagoDG == 1) {
-            value += 5;
-          } else if (diagoDG == 2) {
-            value += 50;
-          } else if (diagoDG == 3) {
-            value += 500;
-          }
+  public int getValue(int color) {
+    int score = 0;
+    if (this.isFinish()) {
+      if (this.playerWin(color)) {
+        return 1000 - this.numberPieceOf(color);
+      } else if (this.playerWin(this.getOtherPlayerColor(color))) {
+        return -10000 + this.numberPieceOf(color);
+      } else {
+        return 0;
+      }
+    }
+    int[][] matAlignPossible = this.createTableEvaluation();
+    for (int j = 0; j<this.height; j++) {
+      for (int i = 0; i<this.width; i++) {
+        if (this.grid[j][i] == color) {
+          score += matAlignPossible[j][i];
+        } else if (this.grid[j][i] == this.getOtherPlayerColor(color)) {
+          score -= matAlignPossible[j][i];
         }
       }
     }
-    return value;
+    return score;
   }
 
   /**

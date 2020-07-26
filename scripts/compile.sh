@@ -1,5 +1,7 @@
 #!bin/sh
 
+cd $(dirname $0)/..
+
 if [ -d build ]
 then
 rm -r build/

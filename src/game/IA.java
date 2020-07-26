@@ -8,6 +8,11 @@ import java.util.ArrayList;
   */
 public class IA {
 
+  public int getOptimumMove(Board b, int colorIa, int prof) {
+    ArrayList<Integer> rec = this.alphabeta(b, Integer.MIN_VALUE, Integer.MAX_VALUE, colorIa, prof);
+    return rec.get(1);
+  }
+
   /**
     * algorithme alphabeta
     * @param b l'etat du jeu de depart

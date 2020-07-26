@@ -27,6 +27,7 @@ public class Interface extends JFrame implements ModelListener {
       */
     public Interface(Board b) {
         this.b = b;
+        b.getValue(Board.RED);
         //this.b.addListener(this);
         this.size = 80;
         this.modeIA = true;
@@ -56,8 +57,8 @@ public class Interface extends JFrame implements ModelListener {
                   Interface.this.repaint();
                 }
                 if (Interface.this.modeIA && !Interface.this.b.getOver()) {
-                  ArrayList<Integer> choiceIa = Interface.this.ia.alphabeta(Interface.this.b,Integer.MIN_VALUE,Integer.MAX_VALUE, Board.RED, 5);
-                  Interface.this.b.addPiece(choiceIa.get(1));
+                  Integer choiceIa = Interface.this.ia.getOptimumMove(Interface.this.b, Board.RED, 5);
+                  Interface.this.b.addPiece(choiceIa);
                   if (Interface.this.b.playerWin(Interface.this.b.getOtherPlayerColor()) || Interface.this.b.isFull()) {
                     Interface.this.repaint();
                   }
