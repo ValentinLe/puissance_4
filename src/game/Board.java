@@ -319,14 +319,14 @@ public class Board extends AbstractModelListener {
     }
     return matAlignPossible;
   }
-
+  
   public int getValue(int color) {
     int score = 0;
     if (this.isFinish()) {
       if (this.playerWin(color)) {
-        return 1000 - this.numberPieceOf(color);
+        return 1000;
       } else if (this.playerWin(this.getOtherPlayerColor(color))) {
-        return -10000 + this.numberPieceOf(color);
+        return -1000;
       } else {
         return 0;
       }
